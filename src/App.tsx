@@ -13,7 +13,6 @@ import { Camera, Stethoscope, Loader } from "lucide-react";
 import Navbar from "./components/Navbar";
 
 function App() {
-  const [showApiKeyModal, setShowApiKeyModal] = useState(false);
   const [apiKey, setApiKey] = useState<string>("");
   const [capturedImageUrl, setCapturedImageUrl] = useState<string | null>(null);
   const [imageBlob, setImageBlob] = useState<Blob | null>(null);
@@ -24,28 +23,28 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [imageBase64, setImageBase64] = useState<string | null>(null);
 
-  useEffect(() => {
-    // Check if API key exists in localStorage
-    const storedApiKey = localStorage.getItem("openai_api_key");
-    if (storedApiKey) {
-      setApiKey(storedApiKey);
-    } else {
-      setShowApiKeyModal(true);
-    }
-  }, []);
+  // useEffect(() => {
+  //   // Check if API key exists in localStorage
+  //   const storedApiKey = localStorage.getItem("openai_api_key");
+  //   if (storedApiKey) {
+  //     setApiKey(storedApiKey);
+  //   } else {
+  //     setShowApiKeyModal(true);
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (import.meta.env.VITE_OPENAI_API_KEY) {
       setApiKey(import.meta.env.VITE_OPENAI_API_KEY);
-      setShowApiKeyModal(false);
+      // setShowApiKeyModal(false);
     }
   }, []);
 
-  const handleApiKeySubmit = (key: string) => {
-    setApiKey(key);
-    localStorage.setItem("openai_api_key", key);
-    setShowApiKeyModal(false);
-  };
+  // const handleApiKeySubmit = (key: string) => {
+  //   setApiKey(key);
+  //   localStorage.setItem("openai_api_key", key);
+  //   // setShowApiKeyModal(false);
+  // };
 
   const handleImageCapture = async (imageUrl: string, blob: Blob) => {
     setCapturedImageUrl(imageUrl);
@@ -101,9 +100,9 @@ function App() {
 
       {/* Main Content */}
       <main className="container mx-auto py-6 px-4">
-        {showApiKeyModal && <ApiKeyModal onSubmit={handleApiKeySubmit} />}
+        {/* {showApiKeyModal && <ApiKeyModal onSubmit={handleApiKeySubmit} />} */}
 
-        {!showApiKeyModal && !capturedImageUrl && (
+        {!capturedImageUrl && (
           <div className="flex flex-col items-center justify-center ">
             <div className="w-full max-w-3xl h-full">
               <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 ">
