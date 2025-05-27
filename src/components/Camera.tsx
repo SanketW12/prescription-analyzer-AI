@@ -27,8 +27,8 @@ const CameraComponent: React.FC<CameraProps> = ({ onCapture, onCancel }) => {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode: "environment",
-          width: { ideal: 400 },
-          height: { ideal: 700 },
+          width: { ideal: 400, min: 400 },
+          height: { ideal: 700, min: 700 },
         },
         audio: false,
       });
