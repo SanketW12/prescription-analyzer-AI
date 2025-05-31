@@ -11,24 +11,34 @@ const CameraComponent: React.FC<CameraProps> = ({ onCapture, onCancel }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [cameraPermission, setCameraPermission] = useState<boolean | null>(
-    null
-  );
+  const [cameraPermission, setCameraPermission] = useState<boolean | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     startCamera();
     return () => {
       stopCamera();
     };
-  }, []);
+  }, [isMobile]);
 
   const startCamera = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode: "environment",
-          width: { ideal: 400, min: 400 },
-          height: { ideal: 700, min: 700 },
+          width: { ideal: isMobile ? 700 : 400, min: isMobile ? 700 : 400 },
+          height: { ideal: isMobile ? 400 : 700, min: isMobile ? 400 : 700 },
         },
         audio: false,
       });
@@ -128,12 +138,6 @@ const CameraComponent: React.FC<CameraProps> = ({ onCapture, onCancel }) => {
               playsInline
               muted
             />
-            {/* <button
-              onClick={onCancel}
-              className="absolute top-4 right-4 bg-gray-800 bg-opacity-70 p-2 rounded-full text-white"
-            >
-              <X size={20} />
-            </button> */}
           </div>
 
           <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 flex justify-center">
